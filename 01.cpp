@@ -80,7 +80,7 @@ void smart_array::add_element(const int& number)
 
 int smart_array::get_element(const int& number)
 {
-	if (number < 0 || number > arr_length - 1) { throw std::exception("Некорректный размер элемента массива!"); }
+	if (number < 0 || number > arr_length) { throw std::exception("Некорректный размер элемента массива!"); }
 	return arr[number];
 }
 
