@@ -28,6 +28,7 @@ int main(int argc, char** argv)
 		arr.add_element(14);
 		arr.add_element(15);
 		std::cout << arr.get_element(1) << std::endl;
+		smart_array arr2 = arr;
 	}
 	catch (const std::exception& ex) {
 		std::cout << ex.what() << std::endl;
