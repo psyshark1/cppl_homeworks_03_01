@@ -7,14 +7,14 @@ public:
 	smart_array(const smart_array&) = delete;
 	smart_array& operator=(const smart_array&) = delete;
 	~smart_array();
-	void add_element(const int& number);
+	void add_element(const int& val);
 	int get_element(const int& number);
 	void print();
 private:
 	int* arr{ nullptr };
 	int arr_length{ 0 };
 	int arr_length_logic{ 0 };
-	void expand_arr(const bool& oversize, const int& number);
+	void expand_arr();
 	void delete_arr();
 };
 
@@ -27,72 +27,77 @@ int main(int argc, char** argv)
 		arr.add_element(155);
 		arr.add_element(14);
 		arr.add_element(15);
+		arr.add_element(13);
 		std::cout << arr.get_element(1) << std::endl;
-		smart_array arr2 = arr;
+		arr.print();
+		std::cout << arr.get_element(6) << std::endl;
+		//smart_array arr2 = arr;
 	}
 	catch (const std::exception& ex) {
 		std::cout << ex.what() << std::endl;
-		std::system("pause");
 		return 1;
 	}
-	std::system("pause");
 	return 0;
 }
 
 smart_array::smart_array(const int& len)
 {
 	if (len < 1) { throw std::exception("Некорректный размер элемента массива!"); }
-	this->arr_length = len - 1;
-	this->arr_length_logic = this->arr_length;
+	this->arr_length = len;
+	//this->arr_length_logic = this->arr_length;
 	this->arr = new int[this->arr_length] {0};
 }
 
-void smart_array::add_element(const int& number)
+void smart_array::add_element(const int& val)
 {
-	if (number < 1)
+	if (this->arr_length_logic + 1 > this->arr_length)
 	{
-		throw std::exception("Некорректный размер элемента массива!");
+		this->expand_arr();
 	}
+	this->arr[this->arr_length_logic++] = val;
+	//if (number < 1)
+	//{
+	//	throw std::exception("Некорректный размер элемента массива!");
+	//}
 
-	if (number > this->arr_length + 1)
-	{
-		this->expand_arr(true, number);
-	}
-		
-	if (number <= this->arr_length_logic + 1) { ++this->arr_length_logic; }
+	//if (number > this->arr_length + 1)
+	//{
+	//	this->expand_arr(true, number);
+	//}
+	//	
+	//if (number <= this->arr_length_logic + 1) { ++this->arr_length_logic; }
 
-	if (this->arr_length_logic >= this->arr_length)
-	{
-		this->expand_arr(false, number);
-	}
+	//if (this->arr_length_logic >= this->arr_length)
+	//{
+	//	this->expand_arr(false, number);
+	//}
 
-	if (number >= 1 && number <= this->arr_length_logic + 1)
-	{
-		for (int i = this->arr_length_logic; i > number - 1; --i)
-		{
-			this->arr[i] = this->arr[i - 1];
-		}
-	}
-	else if (number > this->arr_length_logic)
-	{
-		//this->arr[number] = value;
-	}
+	//if (number >= 1 && number <= this->arr_length_logic + 1)
+	//{
+	//	for (int i = this->arr_length_logic; i > number - 1; --i)
+	//	{
+	//		this->arr[i] = this->arr[i - 1];
+	//	}
+	//}
+	//else if (number > this->arr_length_logic)
+	//{
+	//	//this->arr[number] = value;
+	//}
 }
 
 int smart_array::get_element(const int& number)
 {
-	if (number < 0 || number > arr_length) { throw std::exception("Некорректный размер элемента массива!"); }
+	if (number < 0 || number >= this->arr_length_logic) { throw std::exception("Некорректный размер элемента массива!"); }
 	return arr[number];
 }
 
-void smart_array::expand_arr(const bool& oversize, const int& number)
+void smart_array::expand_arr()
 {
-	int* tmp{ nullptr };
-	int nsz{ 0 };
+	int nsz = this->arr_length << 1;
 
-	(oversize) ? nsz = number - 1 : nsz = this->arr_length * 2;
+	//(oversize) ? nsz = number - 1 : nsz = this->arr_length * 2;
 
-	tmp = new int[nsz] { 0 };
+	int* tmp = new int[nsz] { 0 };
 	for (int i = 0; i < this->arr_length; ++i)
 	{
 		tmp[i] = this->arr[i];
@@ -110,7 +115,7 @@ void smart_array::delete_arr()
 
 void smart_array::print()
 {
-	for (int i = 0; i < this->arr_length; ++i)
+	for (int i = 0; i < this->arr_length_logic; ++i)
 	{
 		std::cout << this->arr[i] << ' ';
 	}
